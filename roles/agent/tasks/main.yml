@@ -1,0 +1,5 @@
+---
+# tasks file for agent
+- name: "teste"
+  command: date
+  changed_when: false
