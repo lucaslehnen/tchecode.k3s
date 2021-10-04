@@ -1,7 +1,17 @@
 # Ansible Collection - tchecode.k3s
 
 It's an Ansible collection with roles to install a k3s cluster.
-Supports arm64 and amd64 hosts running Ubuntu OS.
+
+** For now, can be used only by arm64 and amd64 hosts running Ubuntu OS.
+
+## Roles available
+
+- `tchecode.k3s.prepare`: Prepare nodes (kernel modules, required packages, etc) and download k3s binary.
+- `tchecode.k3s.server`: Install, configure and start k3s server;
+- `tchecode.k3s.agent`: Install, configure and join agent nodes to cluster;
+- `tchecode.k3s.reset`: Reset all changes made by this collection
+
+More info about these roles can be found in `roles/{role}` folder.
 
 ## How to use
 
@@ -31,7 +41,7 @@ Create your playbook `site.yml`:
   become: true
   gather_facts: true
   roles:
-    - {role: commom, tags: [k3s]}
+    - {role: tchecode.k3s.prepare, tags: [k3s]}
   vars:
     k3s_version: v1.21.5+k3s1
 
@@ -40,7 +50,7 @@ Create your playbook `site.yml`:
   become: true
   gather_facts: false
   roles:
-    - {role: config-server, tags: [k3s]}    
+    - {role: tchecode.k3s.server, tags: [k3s]}    
   vars:
     server_ip: "{{ hostvars[groups['k3s_server'][0]]['ansible_host'] | default(groups['k3s_server'][0]) }}"
     ansible_user: ubuntu
@@ -51,7 +61,7 @@ Create your playbook `site.yml`:
   become: true
   gather_facts: false
   roles:
-    - {role: k3s-config-worker, tags: [k3s]}
+    - {role: tchecode.k3s.agent, tags: [k3s]}
   vars:
     server_ip: "{{ hostvars[groups['k3s_server'][0]]['ansible_host'] | default(groups['k3s_server'][0]) }}"
     extra_agent_args: ""
@@ -74,3 +84,8 @@ To revert all changes, you can call the role `reset`. I Suggest another playbook
   vars:
     ansible_user: ubuntu
 ```
+
+## Inspired by:
+
+- https://github.com/k3s-io/k3s-ansible/
+- https://github.com/tmorin/homecloud-ansible

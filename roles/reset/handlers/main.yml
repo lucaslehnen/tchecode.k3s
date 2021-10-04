@@ -1,0 +1,13 @@
+---
+- name: Enable and check K3s service
+  systemd:
+    name: k3s
+    daemon_reload: true
+    state: restarted
+    enabled: true
+  listen: "restart_k3s"
+
+- name: Reboot
+  reboot:
+    msg: "Reboot initiated by Ansible"
+  listen: "reboot"

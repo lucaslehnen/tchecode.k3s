@@ -1,2 +1,8 @@
 ---
-# handlers file for agent
+- name: Enable and check K3s service
+  systemd:
+    name: k3s-node
+    daemon_reload: true
+    state: restarted
+    enabled: true
+  listen: restart_k3s

@@ -1,2 +1,4 @@
 ---
-# defaults file for server
+server_ip: ""
+ansible_user: ubuntu
+extra_server_args: ""

@@ -7,6 +7,7 @@
     - "cgroup_enable=cpuset"
     - "cgroup_memory=1"
     - "cgroup_enable=memory"
+  when: ansible_facts['architecture'] == "aarch64"
   notify: restart
 
 - name: Enable IPv4 forwarding
@@ -15,6 +16,13 @@
     value: "1"
     state: present
     reload: true
+
+- name: Disable swap
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+  notify: restart
 
 - name: Enable IPv6 forwarding
   sysctl:

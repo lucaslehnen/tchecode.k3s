@@ -1,4 +1,3 @@
 ---
-# tasks file for agent
 - include: requirements.yml
 - include: download-k3s.yml

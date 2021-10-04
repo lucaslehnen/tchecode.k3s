@@ -1,38 +1,35 @@
-Role Name
-=========
+Configure K3s server 
+-----------------------
 
-A brief description of the role goes here.
+This role install, configure and start k3s server. 
 
-Requirements
-------------
+Configure the variables
+-----------------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+`server_ip` :  
 
-Role Variables
---------------
+The k3s server node IP;
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+`extra_server_args` : 
 
-Dependencies
-------------
+Extra args that can be passed to the service. 
+Check the k3s documentation: https://rancher.com/docs/k3s/latest/en/installation/install-options/server-config/
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+`ansible_user` : 
 
-Example Playbook
+User to configure access to Kubernetes cluster via CLI/kubectl
+
+Example
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+In your `main.yml`:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+```yaml
+- hosts: k3s-servers
+  roles:
+      - tchecode.k3s.server
+  vars:
+    server_ip: "192.168.99.11"
+    ansible_user: ubuntu
+    extra_server_args: "--write-kubeconfig-mode 644"
+```
